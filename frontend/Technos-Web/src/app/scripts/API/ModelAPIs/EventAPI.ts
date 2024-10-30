@@ -1,34 +1,66 @@
 import {EventInCreateType, EventInPatchType} from '../APITypes/Events.ts';
+import {api} from '../API.ts';
+import {HTTPMethod} from '../Enums/HTTPMethod.ts';
+import APIResponse from '../Responses/APIResponse.ts';
+import {EventType} from '@angular/router';
 
 export default class EventAPI {
 
     static BASE_EVENT_URL: string = '/events';
 
-    static getEvent(id: number) {
-
+    static getEvent(id: number): Promise<APIResponse<EventType>> {
+        return api.requestLogged<EventType>(
+            HTTPMethod.GET,
+            EventAPI.BASE_EVENT_URL + `/${id}`,
+            undefined
+        );
     }
 
-    static getAllEvents() {
-
+    static getAllEvents(): Promise<APIResponse<EventType[]>> {
+        return api.requestLogged<EventType[]>(
+            HTTPMethod.GET,
+            EventAPI.BASE_EVENT_URL,
+            undefined
+        );
     }
 
-    static getAllEventsInWeek() {
-
+    static getAllEventsInWeek(week: number): Promise<APIResponse<EventType[]>> {
+        return api.requestLogged<EventType[]>(
+            HTTPMethod.GET,
+            EventAPI.BASE_EVENT_URL + `/week/${week}`,
+            undefined
+        );
     }
 
-    static getAllEventsInMonth() {
-
+    static getAllEventsInMonth(month: number): Promise<APIResponse<EventType[]>> {
+        return api.requestLogged<EventType[]>(
+            HTTPMethod.GET,
+            EventAPI.BASE_EVENT_URL + `/month/${month}`,
+            undefined
+        );
     }
 
-    static createEvent(body: EventInCreateType) {
-
+    static createEvent(body: EventInCreateType): Promise<APIResponse<undefined>> {
+        return api.requestLogged<undefined>(
+            HTTPMethod.POST,
+            EventAPI.BASE_EVENT_URL,
+            JSON.stringify(body)
+        );
     }
 
-    static updateEvent(id: number, body: EventInPatchType) {
-
+    static updateEvent(id: number, body: EventInPatchType): Promise<APIResponse<undefined>> {
+        return api.requestLogged<undefined>(
+            HTTPMethod.PATCH,
+            EventAPI.BASE_EVENT_URL + `/${id}`,
+            JSON.stringify(body)
+        );
     }
 
-    static deleteEvent(id: number) {
-
+    static deleteEvent(id: number): Promise<APIResponse<undefined>>  {
+        return api.requestLogged<undefined>(
+            HTTPMethod.DELETE,
+            EventAPI.BASE_EVENT_URL + `/${id}`,
+            undefined
+        );
     }
 }
