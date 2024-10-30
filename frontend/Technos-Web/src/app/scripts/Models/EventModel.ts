@@ -1,7 +1,7 @@
-import {EventInCreateType, EventInPatchType, EventType} from '../API/APITypes/Events.ts';
-import APIResponse from '../API/Responses/APIResponse.ts';
-import EventAPI from '../API/ModelAPIs/EventAPI.ts';
-import ErrorResponse from '../API/Responses/ErrorResponse.ts';
+import {EventInCreateType, EventInPatchType, EventType} from '../API/APITypes/Events';
+import APIResponse from '../API/Responses/APIResponse';
+import EventAPI from '../API/ModelAPIs/EventAPI';
+import ErrorResponse from '../API/Responses/ErrorResponse';
 
 export default class EventModel {
 

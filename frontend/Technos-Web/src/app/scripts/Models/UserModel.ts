@@ -1,7 +1,7 @@
-import {UserInCreateType, UserInPatchType, UserType} from "../API/APITypes/Users.ts";
-import UserAPI from "../API/ModelAPIs/UserAPI.ts";
-import APIResponse from "../API/Responses/APIResponse.ts";
-import ErrorResponse from "../API/Responses/ErrorResponse.ts";
+import {UserInCreateType, UserInPatchType, UserType} from "../API/APITypes/Users";
+import UserAPI from "../API/ModelAPIs/UserAPI";
+import APIResponse from "../API/Responses/APIResponse";
+import ErrorResponse from "../API/Responses/ErrorResponse";
 
 /**
  * A classic model that provides handling methods for actions that concerns a User.

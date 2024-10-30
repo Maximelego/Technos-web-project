@@ -1,4 +1,4 @@
-import APIResponse from "./APIResponse.ts";
+import APIResponse from "./APIResponse";
 
 /**
  * This class inherits from APIResponse and represents an unsuccessful response from the API.

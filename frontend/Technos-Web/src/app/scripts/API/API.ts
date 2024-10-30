@@ -1,12 +1,12 @@
-import ErrorResponse from "./Responses/ErrorResponse.ts";
-import CorrectResponse from "./Responses/CorrectResponse.ts";
-import {HTTPMethod} from "./Enums/HTTPMethod.ts";
-import {ContentType} from "./Enums/ContentType.ts";
-import Storage from "./Storage.ts";
-import AuthModel from "../Models/AuthModel.ts";
+import ErrorResponse from "./Responses/ErrorResponse";
+import CorrectResponse from "./Responses/CorrectResponse";
+import {HTTPMethod} from "./Enums/HTTPMethod";
+import {ContentType} from "./Enums/ContentType";
+import Storage from "./Storage";
+import AuthModel from "../Models/AuthModel";
 
-import {APIErrorResponse} from "./APITypes/CommonTypes.ts";
-import APIResponse from "./Responses/APIResponse.ts";
+import {APIErrorResponse} from "./APITypes/CommonTypes";
+import APIResponse from "./Responses/APIResponse";
 
 /**
  * This class is designed to make API calls, logged or not.

@@ -1,9 +1,9 @@
-import {TokenPair} from "../APITypes/Tokens.ts";
-import {api} from "../API.ts";
-import {HTTPMethod} from "../Enums/HTTPMethod.ts";
+import {TokenPair} from "../APITypes/Tokens";
+import {api} from "../API";
+import {HTTPMethod} from "../Enums/HTTPMethod";
 
-import {ConfirmationMessage} from "../APITypes/CommonTypes.ts";
-import APIResponse from "../Responses/APIResponse.ts";
+import {ConfirmationMessage} from "../APITypes/CommonTypes";
+import APIResponse from "../Responses/APIResponse";
 
 /**
  * API methods for auth endpoints.

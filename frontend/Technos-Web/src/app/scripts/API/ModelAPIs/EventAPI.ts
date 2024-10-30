@@ -1,7 +1,7 @@
-import {EventInCreateType, EventInPatchType} from '../APITypes/Events.ts';
-import {api} from '../API.ts';
-import {HTTPMethod} from '../Enums/HTTPMethod.ts';
-import APIResponse from '../Responses/APIResponse.ts';
+import {EventInCreateType, EventInPatchType} from '../APITypes/Events';
+import {api} from '../API';
+import {HTTPMethod} from '../Enums/HTTPMethod';
+import APIResponse from '../Responses/APIResponse';
 import {EventType} from '@angular/router';
 
 export default class EventAPI {

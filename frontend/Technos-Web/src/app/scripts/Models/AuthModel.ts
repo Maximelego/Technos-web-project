@@ -1,8 +1,8 @@
-import Storage from "../API/Storage.ts";
-import {TokenPair} from "../API/APITypes/Tokens.ts";
-import CorrectResponse from "../API/Responses/CorrectResponse.ts";
-import AuthAPI from "../API/ModelAPIs/AuthAPI.ts";
-import APIResponse from "../API/Responses/APIResponse.ts";
+import Storage from "../API/Storage";
+import {TokenPair} from "../API/APITypes/Tokens";
+import CorrectResponse from "../API/Responses/CorrectResponse";
+import AuthAPI from "../API/ModelAPIs/AuthAPI";
+import APIResponse from "../API/Responses/APIResponse";
 
 /**
  * This class provides handling methods for the authentication process of the user.

@@ -1,7 +1,7 @@
-import {api} from "../API.ts";
-import {HTTPMethod} from "../Enums/HTTPMethod.ts";
-import APIResponse from "../Responses/APIResponse.ts";
-import {UserInCreateType, UserInPatchType, UserType} from "../APITypes/Users.ts";
+import {api} from "../API";
+import {HTTPMethod} from "../Enums/HTTPMethod";
+import APIResponse from "../Responses/APIResponse";
+import {UserInCreateType, UserInPatchType, UserType} from "../APITypes/Users";
 
 /**
  * API methods for user endpoints.
