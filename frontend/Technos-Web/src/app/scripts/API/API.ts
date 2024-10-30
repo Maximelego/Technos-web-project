@@ -1,6 +1,5 @@
 import ErrorResponse from "./Responses/ErrorResponse.ts";
 import CorrectResponse from "./Responses/CorrectResponse.ts";
-import Data from "../../assets/Data.ts";
 import {HTTPMethod} from "./Enums/HTTPMethod.ts";
 import {ContentType} from "./Enums/ContentType.ts";
 import Storage from "./Storage.ts";
@@ -75,10 +74,9 @@ class API {
             // Setting up the timeout mechanism :
             setTimeout(() => {
                         resolve(new ErrorResponse<T>(504 ,
-                            "Timeout waiting for response after "
-                            + Data.PROGRAM_VALUES.TIMEOUT_BEFORE_REQUEST_FAILURE + " ms"))
+                            "Timeout waiting for response after 6000 ms"))
                         },
-                Data.PROGRAM_VALUES.TIMEOUT_BEFORE_REQUEST_FAILURE);
+                       6000);
 
             // Fetching data from the server
             fetch(`${api.API_URL}${url}`,
@@ -94,8 +92,8 @@ class API {
                     if(response.status >= 200 && response.status < 300) {
                         resolve(new CorrectResponse<T>(data));
                     } else {
-                        const errorMessage = (data as APIErrorResponse).detail ||
-                                             (data as APIErrorResponse).message ||
+                        const errorMessage = (data as APIErrorResponse)["detail"] ||
+                                             (data as APIErrorResponse)["message"] ||
                                              "An unknown error occurred";
                         resolve(new ErrorResponse(response.status, errorMessage));
                     }

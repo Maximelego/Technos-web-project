@@ -92,6 +92,7 @@ export default class UserModel {
         }
         const response: APIResponse<undefined> = await UserAPI.updateUser(this._id, body);
         if (response.isError()) return (response as ErrorResponse<undefined>);
+        return undefined;
     }
 
     /**

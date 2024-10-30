@@ -3,6 +3,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
