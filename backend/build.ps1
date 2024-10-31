@@ -1,74 +1,74 @@
-function Clean-UpStack {
+# build.ps1
+
+param (
+    [string]$Environment = "development"
+)
+
+$PROD = "production"
+$DEV = "development"
+$BUNDLE = "bundle"
+$DOCKER_COMPOSE_STACK_NAME = "technosweb"
+
+function Clean-Up-Stack {
     param (
-        [string]$composeFile
+        [string]$ComposeFile
     )
 
-    Write-Output "[STATUS] - Cleaning up stack defined in $composeFile"
+    Write-Host "[STATUS] - Cleaning up stack defined in $ComposeFile"
 
     # Stop and remove containers, networks, and volumes associated with the specified compose file
-    docker compose -f $composeFile down -v --remove-orphans
-    # Remove dangling images specific to this compose file (only those not used by other containers)
-    docker images -f "dangling=true" -q | ForEach-Object { docker rmi $_ }
-    # Remove any anonymous or dangling volumes specific to this stack
-    docker volume prune -f
-    # Cleaning the older images
-    docker rm -f (docker ps -a -q --filter "name=sobekwa") | Out-Null
-    docker rmi -f (docker images -q --filter "reference=sobekwa*") | Out-Null
+    docker compose -f $ComposeFile down -v --remove-orphans
 
-    Write-Output "[STATUS] - Stack cleaned up successfully."
+    # Remove dangling images not used by other containers
+    docker images -f "dangling=true" -q | ForEach-Object { docker rmi $_ }
+
+    # Remove anonymous or dangling volumes specific to this stack
+    docker volume prune -f
+
+    # Remove older containers and images related to the stack
+    docker ps -a -q --filter "name=$DOCKER_COMPOSE_STACK_NAME" | ForEach-Object { docker rm -f $_ }
+    docker images -q --filter "reference=$DOCKER_COMPOSE_STACK_NAME*" | ForEach-Object { docker rmi -f $_ }
+
+    Write-Host "[STATUS] - Stack cleaned up successfully."
 }
 
 function Run-Dev {
-    Write-Output "[STATUS] - Running Development environment."
+    Write-Host "[STATUS] - Running Development environment."
 
     # Clean up the development stack
-    Clean-UpStack "./docker-compose_backdev.yml"
+    Clean-Up-Stack "./docker-compose_backdev.yml"
 
     # Build and start the containers with no cache
-    docker compose -f .\docker-compose_backdev.yml build --no-cache
-    docker compose -f .\docker-compose_backdev.yml up -d --remove-orphans --force-recreate
+    docker compose -f "./docker-compose_backdev.yml" build --no-cache
+    docker compose -f "./docker-compose_backdev.yml" up -d --remove-orphans --force-recreate
 
     # Run the application script
-    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-    .\scripts\run.ps1
+    ./scripts/run.ps1
 }
 
 function Run-Bundle {
-    Write-Output "[STATUS] - Running Bundled environment."
+    Write-Host "[STATUS] - Running Bundled environment."
 
     # Clean up the bundled stack
-    Clean-UpStack "./docker-compose.yml"
+    Clean-Up-Stack "./docker-compose.yml"
 
     # Build and start the containers with no cache
-    $cacheBust = (Get-Date -UFormat %s)
-    docker compose -f .\docker-compose.yml build --no-cache --build-arg CACHEBUST=$cacheBust
-    docker compose -f .\docker-compose.yml up -d --remove-orphans --force-recreate
+    docker compose -f "./docker-compose.yml" build --no-cache --build-arg CACHEBUST=$(Get-Date -UFormat %s)
+    docker compose -f "./docker-compose.yml" up -d --remove-orphans --force-recreate
 }
 
 function Run-Prod {
-    Write-Output "[STATUS] - Running Production environment."
-
-    # No stack clean-up to retain the production state
-    docker compose -f .\docker-compose.yml up -d --remove-orphans
+    Write-Host "[STATUS] - Running Production environment."
+    docker compose -f "./docker-compose.yml" up -d --remove-orphans
 }
 
-# Variables
-$environment = $args[0]
-$prod = "production"
-$dev = "development"
-$bundle = "bundle"
+# Initialize project files
+./scripts/init.ps1
 
-# Initializing project's files.
-.\scripts\init.ps1
-
-if ($environment) {
-    if ($environment -eq $dev) {
-        Run-Dev
-    } elseif ($environment -eq $bundle) {
-        Run-Bundle
-    } elseif ($environment -eq $prod) {
-        Run-Prod
-    }
-} else {
-    Run-Dev
+# Run the specified environment setup
+switch ($Environment) {
+    $DEV { Run-Dev }
+    $BUNDLE { Run-Bundle }
+    $PROD { Run-Prod }
+    default { Run-Dev }
 }

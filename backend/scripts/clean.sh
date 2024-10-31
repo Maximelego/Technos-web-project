@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "[STATUS] - Removing temporary files..."
+echo "[STATUS] - Removing environnment files..."
 
-rm -r ./app/.venv
+rm -r ./app/node_modules
+rm ./.env
 rm ./init_db.sql
-rm .env
 
 echo "[STATUS] - Done cleaning !"

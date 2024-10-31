@@ -1,0 +1,11 @@
+-- Simulates a CREATE DATABASE IF NOT EXISTS.
+-- This command does not exists in postgres databases.
+SELECT 'CREATE DATABASE technos_web_db'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'technos_web_db');
+
+alter database technos_web_db set timezone to 'Europe/Paris';
+
+SELECT 'CREATE USER technos_web_admin WITH PASSWORD postgres_key_to_replace' 
+WHERE NOT EXISTS (SELECT FROM user WHERE user = 'technos_web_admin');
+GRANT ALL PRIVILEGES ON DATABASE technos_web_db TO technos_web_admin;
+ALTER DATABASE technos_web_db OWNER TO technos_web_admin;

@@ -1,4 +1,4 @@
-name: 'sobekwa'
+name: 'technosweb'
 services:
   redis:
     image: redis

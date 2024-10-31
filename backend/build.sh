@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Variables:
+ENVIRONMENT="$1"
+PROD="production"
+DEV="development"
+BUNDLE="bundle"
+DOCKER_COMPOSE_STACK_NAME="technosweb"
+
 function clean_up_stack() {
   local compose_file="$1"
 
@@ -12,8 +19,8 @@ function clean_up_stack() {
   # Remove any anonymous or dangling volumes specific to this stack
   docker volume prune -f
   # Cleaning the older images
-  docker rm -f $(docker ps -a -q --filter "name=sobekwa")
-  docker rmi -f $(docker images -q --filter "reference=sobekwa*")
+  docker rm -f $(docker ps -a -q --filter "name=$DOCKER_COMPOSE_STACK_NAME")
+  docker rmi -f $(docker images -q --filter "reference=$DOCKER_COMPOSE_STACK_NAME*")
 
   echo "[STATUS] - Stack cleaned up successfully."
 }
@@ -41,7 +48,7 @@ function run_bundle() {
 
   # Build and start the containers with no cache
 
-  docker compose -f ./docker-compose.yml build --no-cache --build-arg CACHEBUST=$(date +%s)
+  docker compose -f ./docker-compose.yml build --no-cache --build-arg CACHEBUST="$(date +%s)"
   docker compose -f ./docker-compose.yml up -d --remove-orphans --force-recreate
 }
 
@@ -51,12 +58,6 @@ function run_prod() {
   # No stack clean-up to retain the production state
   docker compose -f ./docker-compose.yml up -d --remove-orphans
 }
-
-# Variables:
-ENVIRONMENT="$1"
-PROD="production"
-DEV="development"
-BUNDLE="bundle"
 
 # Initializing project's files.
 chmod +x ./scripts/init.sh

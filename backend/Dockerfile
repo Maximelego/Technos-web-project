@@ -1,18 +1,25 @@
-FROM python:3.12
+FROM node:20
 
-ARG CACHEBUST=1  # Dummy build argument for cache invalidation
+# Dummy build argument for cache invalidation
+ARG CACHEBUST=1
 
-RUN mkdir build
-WORKDIR /build
+WORKDIR /app
 
-COPY ./app/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN npm install -g @nestjs/cli
 
-COPY ./app ./app
-EXPOSE 8000
+COPY ./app/package*.json ./
 
+# Install all dependencies
+RUN npm install
+
+COPY ./app .
+
+RUN npm run build
+
+# Wait for redis and postgresql to start
 ENV WAIT_VERSION 2.11.0
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
 RUN chmod +x /wait
 
-CMD python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+# Launching the server in production mode.
+CMD ["npm", "run", "start:prod"]

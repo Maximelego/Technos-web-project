@@ -1,7 +1,8 @@
-Write-Host "[STATUS] - Removing temporary files..."
+Write-Host "[STATUS] - Removing environment files..."
 
-Remove-Item -Recurse -Force .\app\.venv
-Remove-Item -Force .\init_db.sql
-Remove-Item -Force .env
+# Remove directories and files
+Remove-Item -Recurse -Force ./app/node_modules
+Remove-Item -Force ./.env
+Remove-Item -Force ./init_db.sql
 
 Write-Host "[STATUS] - Done cleaning!"

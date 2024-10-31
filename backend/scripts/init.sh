@@ -23,7 +23,7 @@ JWT_REFRESH_KEY=$(openssl rand -hex 32)
 
 echo "[CONFIG] - Copying files... "
 
-cp -f ./examples/init_db.sql.example ./init_db.sql
+cp -f ./examples/init_db.sql.example init_db.sql
 cp -f ./examples/.env.example ./.env
 
 echo "[CONFIG] - Installing keys ..."
