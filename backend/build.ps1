@@ -36,34 +36,34 @@ function Run-Dev {
     Write-Host "[STATUS] - Running Development environment."
 
     # Clean up the development stack
-    Clean-Up-Stack "./docker-compose_backdev.yml"
+    Clean-Up-Stack ".\docker-compose_backdev.yml"
 
     # Build and start the containers with no cache
-    docker compose -f "./docker-compose_backdev.yml" build --no-cache
-    docker compose -f "./docker-compose_backdev.yml" up -d --remove-orphans --force-recreate
+    docker compose -f ".\docker-compose_backdev.yml" build --no-cache
+    docker compose -f ".\docker-compose_backdev.yml" up -d --remove-orphans --force-recreate
 
     # Run the application script
-    ./scripts/run.ps1
+    .\scripts\run.ps1
 }
 
 function Run-Bundle {
     Write-Host "[STATUS] - Running Bundled environment."
 
     # Clean up the bundled stack
-    Clean-Up-Stack "./docker-compose.yml"
+    Clean-Up-Stack ".\docker-compose.yml"
 
     # Build and start the containers with no cache
-    docker compose -f "./docker-compose.yml" build --no-cache --build-arg CACHEBUST=$(Get-Date -UFormat %s)
-    docker compose -f "./docker-compose.yml" up -d --remove-orphans --force-recreate
+    docker compose -f ".\docker-compose.yml" build --no-cache --build-arg CACHEBUST=$(Get-Date -UFormat %s)
+    docker compose -f ".\docker-compose.yml" up -d --remove-orphans --force-recreate
 }
 
 function Run-Prod {
     Write-Host "[STATUS] - Running Production environment."
-    docker compose -f "./docker-compose.yml" up -d --remove-orphans
+    docker compose -f ".\docker-compose.yml" up -d --remove-orphans
 }
 
 # Initialize project files
-./scripts/init.ps1
+.\scripts\init.ps1
 
 # Run the specified environment setup
 switch ($Environment) {

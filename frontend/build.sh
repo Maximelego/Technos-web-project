@@ -1,28 +1,15 @@
 #!/bin/bash
 
 # Variables
-FOLDER_NAME="edt-manager-backend"
-BACKEND_REPOSITORY="https://github.com/Sobek-W-A/edt-manager-backend.git"
+FOLDER_NAME="../backend"
 ENVIRONNMENT="$1"
 DEV="development"
 PROD="production"
 
-function clone_repo_and_build() {
-
-  # Cloning the frontend repository.
-  chmod +x ./scripts/cloner.sh
-  ./scripts/cloner.sh "$BACKEND_REPOSITORY" "$1"
-
-  # Checking if the repository has been cloned successfully.
-  if [ ! $? ]; then
-    echo "[ERROR] - The repository has not been successfully cloned !"
-
-    if [ ! -d "$FOLDER_NAME" ]; then
-      echo "[ERROR] - The repository folder does not exist !"
-      exit 1
-    else
-      echo "[STATUS] - Repository's folder has been found. Proceeding..."
-    fi
+function build_backend() {
+  if [ ! -d "$FOLDER_NAME" ]; then
+    echo "[ERROR] - The backend folder does not exist !"
+    exit 1
   fi
 
   # Moving to the cloned repository and executing the build script.
@@ -30,25 +17,22 @@ function clone_repo_and_build() {
   chmod +x "./build.sh"
   ./build.sh "bundle"
   cd ..
+  cd "frontend" || exit 1
 }
 
 
 function run_dev() {
-
-  # Cloning the repository in dev mode.
-  clone_repo_and_build "dev"
+  # Building the backend containers.
+  build_backend
 
   # Launching the current application.
-  cd ./app || exit 1
-
-  npm install
-  npm run dev
+  chmod +x ./scripts/run.sh
+  ./scripts/run.sh
 }
 
 function run_prod() {
-
-  # Cloning the repository.
-  clone_clone_repo_and_build
+  # Building the backend repository.
+  build_backend
 
   # Running the compose file
   docker compose -f ./docker-compose.yml up -d
@@ -57,7 +41,6 @@ function run_prod() {
 # Cleaning eventual remainder files
 chmod +x ./scripts/clean.sh
 ./scripts/clean.sh
-
 
 if [[ -n "$ENVIRONNMENT" ]]; then
   if [[ "$ENVIRONNMENT" == "$DEV" ]]; then

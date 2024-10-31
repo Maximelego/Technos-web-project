@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20.18
 
 # Dummy build argument for cache invalidation
 ARG CACHEBUST=1

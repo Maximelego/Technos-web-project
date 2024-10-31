@@ -1,4 +1,4 @@
-name: 'sobekwa'
+name: 'technosweb'
 services:
   frontend-app:
     container_name: frontend
@@ -6,5 +6,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
-    volumes:
-      - /app/node_modules

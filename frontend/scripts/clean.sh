@@ -2,6 +2,6 @@
 
 echo "[STATUS] - Cleaning environnment-related files..."
 
-rm -rf ./edt-manager-backend
+rm -rf ./app/node_modules
 
 echo "[STATUS] - Done cleaning !"

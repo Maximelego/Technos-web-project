@@ -1,5 +1,5 @@
 # Define the app directory
-$APP_DIR = "./app"
+$APP_DIR = ".\app"
 
 # Check if the app directory exists
 if (!(Test-Path -Path $APP_DIR -PathType Container)) {
