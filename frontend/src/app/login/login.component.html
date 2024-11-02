@@ -1,13 +1,33 @@
-<h1>page workingg</h1>
-<h2>Connexion</h2>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <label for="email">Email</label>
-  <input id="email" formControlName="email" type="email" />
+<div class="login-container">
+  <h2>Connexion</h2>
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput id="email" formControlName="email" type="email" />
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          L'email est requis
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+          Format de l'email invalide
+        </mat-error>
+      </mat-form-field>
+    </div>
 
-  <label for="password">Mot de passe</label>
-  <input id="password" formControlName="password" type="password" />
+    <div class="form-field">
+      <mat-form-field appearance="fill">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput id="password" formControlName="password" type="password" />
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Le mot de passe est requis
+        </mat-error>
+      </mat-form-field>
+    </div>
 
-  <button type="submit">Se connecter</button>
-</form>
+    <button mat-raised-button color="primary" type="submit">Se connecter</button>
+  </form>
 
-<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</div>
+

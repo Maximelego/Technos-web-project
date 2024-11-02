@@ -1,0 +1,28 @@
+.login-container {
+    max-width: 400px; /* Limiter la largeur du formulaire */
+    margin: 0 auto;   /* Centrer le formulaire sur la page */
+    padding: 20px;    /* Ajouter de l'espace autour du contenu */
+    border: 1px solid #333; /* Bordure grise */
+    border-radius: 8px; /* Coins arrondis */
+    background-color: #ffffff; /* Couleur de fond blanche */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  }
+  
+  h2 {
+    margin-bottom: 20px; /* Espacement en bas du titre */
+    color: #333; /* Couleur du texte du titre */
+  }
+  
+  .form-field {
+    margin-bottom: 15px; /* Espacement entre les champs du formulaire */
+  }
+  
+  mat-spinner {
+    display: block;
+    margin: 20px auto; /* Centrer le spinner de chargement */
+  }
+  
+  button {
+    width: 100%; /* Prendre toute la largeur du formulaire */
+  }
+  
