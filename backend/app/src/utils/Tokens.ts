@@ -69,7 +69,7 @@ export default class Tokens {
     );
   }
 
-  async refreshTokens(): Promise<TokenPairDto> {
+  async refreshTokens(): Promise<void> {
     try {
       const tokenPayload: TokenPayload = jwt.verify(
         this.refreshToken,
@@ -88,8 +88,6 @@ export default class Tokens {
         tokenPayload.id,
         TokenTypes.REFRESH_TOKEN,
       );
-
-      return this.toDto();
     } catch (e) {
       if (e instanceof TokenExpiredError) {
         throw new ExpiredTokenException();

@@ -40,6 +40,7 @@ export class AuthService {
       tokens.access_token,
       tokens.refresh_token,
     );
-    return await tokenPair.refreshTokens();
+    await tokenPair.refreshTokens();
+    return tokenPair.toDto();
   }
 }
