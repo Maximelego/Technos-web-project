@@ -9,16 +9,16 @@ export class AuthController {
 
   @Post('login')
   login(@Body() loginDto: LoginDto) {
-
+    return this.authService.login(loginDto);
   }
 
   @Post('logout')
   logout(@Body() tokenPairDto: TokenPairDto) {
-
+    return this.authService.logout(tokenPairDto);
   }
 
   @Post('refresh')
   refresh(@Body() tokenPairDto: TokenPairDto) {
-
+    return this.authService.refreshTokens(tokenPairDto);
   }
 }
