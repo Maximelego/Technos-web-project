@@ -39,4 +39,6 @@ write_key "$REDIS_KEY" "redis_key_to_replace" './.env'
 write_key "$JWT_AUTH_KEY" "jwt_auth_key_to_replace" './.env'
 write_key "$JWT_REFRESH_KEY" "jwt_refresh_key_to_replace" './.env'
 
+cp -f ./.env ./app/.env
+
 echo "[CONFIG] - Configuration done !"
