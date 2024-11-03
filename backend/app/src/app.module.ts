@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 
-ConfigModule.forRoot();
+ConfigModule.forRoot().then();
 
 @Module({
   imports: [

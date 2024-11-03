@@ -7,5 +7,6 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 }
 
-ConfigModule.forRoot();
-bootstrap();
+ConfigModule.forRoot().then(() => {
+  bootstrap().then();
+});
