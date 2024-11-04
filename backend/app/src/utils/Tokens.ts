@@ -11,6 +11,9 @@ import {
   TokenRevokedException,
 } from './HTTPExceptions';
 import { RedisInterface } from './Redis';
+import { ConfigModule } from '@nestjs/config';
+
+ConfigModule.forRoot();
 
 enum TokenTypes {
   AUTH_TOKEN = 'AUTH_TOKEN',

@@ -1,6 +1,9 @@
 import { Redis } from 'ioredis';
 import * as process from 'node:process';
 import { TokenPayload } from './Tokens';
+import { ConfigModule } from '@nestjs/config';
+
+ConfigModule.forRoot();
 
 export class RedisInterface {
   private static redisConnection: Redis = new Redis({

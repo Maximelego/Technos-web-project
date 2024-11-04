@@ -1,5 +1,4 @@
-import { Column, Entity } from 'typeorm';
-import { PrimaryGeneratedColumn } from 'typeorm/browser';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 /**
  * This class defines what a user is inside the database.
