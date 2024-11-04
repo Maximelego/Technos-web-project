@@ -5,3 +5,5 @@ node_modules/
 
 .env
 init_db.sql
+.angular
+backend/dist/
