@@ -7,13 +7,16 @@ WORKDIR /app
 COPY ./app/package*.json ./
 
 # Install dependencies
-RUN npm install --production
+RUN npm install
+
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
 
 # Copy the rest of the application files to the working directory
 COPY ./app .
 
-# Build the React application
-RUN npm run build
+# Build the Angular application
+RUN ng build --configuration production
 
 # Production Stage
 FROM nginx:latest
