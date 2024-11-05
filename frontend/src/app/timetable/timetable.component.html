@@ -3,7 +3,7 @@
   [adaptivityEnabled]="true" [showAllDayPanel]="true" [cellDuration]="20" [height]="600"
   appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
   (onAppointmentAdded)="onAppointmentAdded($event)" (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
-  (onAppointmentUpdated)="onAppointmentUpdated($event)" (onAppointmentDeleted)="onAppointmentDeleted($event)">
+  (onAppointmentUpdated)="onAppointmentUpdated($event)" >
 
   <dxi-view type="day" [startDayHour]="6" [endDayHour]="23"></dxi-view>
   <dxi-view type="week" [startDayHour]="8" [endDayHour]="23"></dxi-view>

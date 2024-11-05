@@ -3,6 +3,7 @@ import { DxSchedulerModule, DxButtonModule, DxSchedulerComponent } from 'devextr
 import { TimetableService } from '../shared/services/timetable.service';
 import { EventType } from '../scripts/API/APITypes/Events';
 import { UserType } from '../scripts/API/APITypes/Users';
+import ErrorResponse from '../scripts/API/Responses/ErrorResponse';
 
 @Component({
   selector: 'app-timetable',
@@ -14,22 +15,42 @@ import { UserType } from '../scripts/API/APITypes/Users';
   //schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TimetableComponent {
-data: any;
-isDeleteButtonExist(_t13: any) {
-throw new Error('Method not implemented.');
-}
-onDeleteButtonClick($event: Event,arg1: any) {
-throw new Error('Method not implemented.');
-}
   @ViewChild(DxSchedulerComponent, { static: false })
   scheduler!: DxSchedulerComponent;
 
-  appointments: EventType[];
+  appointments: EventType[] = [];
   users: UserType[] = [];
   currentDate: Date = new Date();
+  data: any;
+
   constructor(private service: TimetableService) {
-    this.appointments = service.getAppointments();
-    this.users = service.getUsersData();
+    this.initializeData();
+  }
+  async initializeData(): Promise<void> {
+    const eventsResponse = await this.service.getEvents();
+    if (eventsResponse instanceof ErrorResponse) {
+      console.error("Failed to fetch events:", eventsResponse.errorMessage);
+      this.appointments = []; 
+    } else {
+      console.log(eventsResponse)
+      this.appointments = eventsResponse.map(eventModel => {
+        const data = (eventModel.data as any)._doc
+        return {
+          _id: data._id,
+          title: data.title,
+          description: data.description || '', 
+          startDate: new Date(data.startDate),
+          endDate: new Date(data.endDate),
+          dayLong: data.dayLong || false,
+          recurrence: data.recurrence || '',
+          createdAt: new Date(data.createdAt),
+          updatedAt: new Date(data.updatedAt),
+          user: data.user || 'Unknown'
+        };
+      });
+    }
+  
+    this.users = await this.service.getUsersData();
   }
 
   getFullName(userId: number): string {
@@ -74,17 +95,19 @@ throw new Error('Method not implemented.');
     console.log(appointment);
   }
 
-  onAppointmentUpdated (event: any) {
+  onAppointmentUpdated(event: any) {
     //TODO Handler of the "appointmentUpdated" event
   }
-  onAppointmentDeleted (event: any) {
-    // TODO Handler of the "appointmentDeleted" event
-}
-onDeleteAppointment(appointmentData: any, event: Event) {
-  event.stopPropagation(); 
-  console.log('Suppression de l\'événement :', appointmentData);
-  this.scheduler.instance.deleteAppointment(appointmentData);
-  this.scheduler.instance.hideAppointmentTooltip();
-
-}
+  onDeleteAppointment(appointmentData: any, event: Event) {
+    event.stopPropagation();
+    this.service.deleteEvent(appointmentData._id)
+    this.scheduler.instance.deleteAppointment(appointmentData);
+    this.scheduler.instance.hideAppointmentTooltip();
+  }
+  isDeleteButtonExist(_t13: any) {
+    throw new Error('Method not implemented.');
+  }
+  onDeleteButtonClick($event: Event, arg1: any) {
+    throw new Error('Method not implemented.');
+  }
 }

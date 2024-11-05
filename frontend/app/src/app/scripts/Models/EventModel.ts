@@ -5,7 +5,7 @@ import ErrorResponse from '../API/Responses/ErrorResponse';
 
 export default class EventModel {
 
-    constructor(data: EventType) {
+    constructor(public data: EventType) {
 
     }
 
@@ -54,8 +54,8 @@ export default class EventModel {
         return response.isError() ? response as ErrorResponse<undefined> : undefined;
     }
 
-    async deleteEvent(): Promise<undefined | ErrorResponse<undefined>> {
-        const response: APIResponse<undefined> = await EventAPI.deleteEvent(0); // TODO
+    static async deleteEvent(id : string): Promise<undefined | ErrorResponse<undefined>> {
+        const response: APIResponse<undefined> = await EventAPI.deleteEvent(id);
         return response.isError() ? response as ErrorResponse<undefined> : undefined;
     }
 }
