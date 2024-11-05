@@ -29,10 +29,13 @@ export class AuthService {
     const response: undefined | ErrorResponse<undefined> = await userData.createUser();
 
     if (response) {
+      // Gérer l'erreur d'inscription
       console.error('Erreur d\'inscription', response);
       throw new Error('Erreur d\'inscription');
     } else {
+      // Inscription réussie
       console.log('Inscription réussie');
+      // Tu peux éventuellement gérer la connexion immédiate après l'inscription si nécessaire
     }
   }
 

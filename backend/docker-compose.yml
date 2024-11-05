@@ -12,6 +12,8 @@ services:
       - REDIS_DB=${REDIS_DB}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+    networks:
+      - technosweb_net
 
   postgres:
     image: postgres
@@ -27,6 +29,8 @@ services:
       - TZ=Europe/Paris
       - PGTZ=Europe/Paris
     restart: unless-stopped
+    networks:
+      - technosweb_net
 
   api:
     build:
@@ -56,6 +60,8 @@ services:
       - redis
     volumes:
       - ./src:/app/src
+    networks:
+      - technosweb_net
 
   pgadmin:
     image: dpage/pgadmin4
@@ -68,7 +74,13 @@ services:
       - '8080:8080'
     depends_on:
       - postgres
+    networks:
+      - technosweb_net
 
 volumes:
   postgres_data:
   redis_data:
+
+networks:
+  technosweb_net:
+    driver: bridge
