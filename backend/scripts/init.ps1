@@ -46,4 +46,6 @@ Write-Key -key $REDIS_KEY -to_replace "redis_key_to_replace" -file_path '.\.env'
 Write-Key -key $JWT_AUTH_KEY -to_replace "jwt_auth_key_to_replace" -file_path '.\.env'
 Write-Key -key $JWT_REFRESH_KEY -to_replace "jwt_refresh_key_to_replace" -file_path '.\.env'
 
+Copy-Item .\\.env .\\app\\.env
+
 Write-Output "[CONFIG] - Configuration done !"
