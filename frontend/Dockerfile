@@ -26,7 +26,7 @@ FROM nginx:latest
 COPY ./app/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy build artifacts to NGINX
-COPY --from=build-stage /app/dist/frontend /usr/share/nginx/html
+COPY --from=build-stage /app/dist/frontend/browser /usr/share/nginx/html
 
 # Expose port 80 for NGINX
 EXPOSE 80
