@@ -1,0 +1,20 @@
+server:
+  postgres:
+    database: "technos_web_db"
+    user: "technos_web_admin"
+    password: "postgres_key_to_replace"
+    port: 5432
+    host: "localhost"
+  redis :
+    REDIS_DB: "0"
+    REDIS_PASSWORD: "redis_key_to_replace"
+    REDIS_PORT: 6379
+    REDIS_HOST: "localhost"
+  api:
+    ENVIRONMENT: "development"
+    API_SERVER_PORT: 3000
+    JWT_ALGORITHM: "HS256"
+    JWT_AUTH_TOKEN_SECRET_KEY: "jwt_auth_key_to_replace"
+    JWT_REFRESH_TOKEN_SECRET_KEY: "jwt_refresh_key_to_replace"
+    AUTH_TOKEN_EXPIRE: 3600000
+    REFRESH_TOKEN_EXPIRE: 604800000
