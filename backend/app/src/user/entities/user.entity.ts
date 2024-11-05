@@ -20,6 +20,6 @@ export class User {
   @Column({ type: 'varchar', length: 40 })
   mail: string;
 
-  @Column({ type: 'varchar', length: 40 })
+  @Column({ type: 'varchar', length: 60 })
   hash: string;
 }
