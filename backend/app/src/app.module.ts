@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EventModule } from './event/event.module';
-import { EventController } from './event/event.controller';
-import { EventService } from './event/event.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { User } from './user/entities/user.entity';
 import { EventType } from './event/event.entity';
 
 ConfigModule.forRoot().then();
@@ -20,7 +19,7 @@ ConfigModule.forRoot().then();
       port: Number.parseInt(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
-      entities: [EventType],
+      entities: [EventType, User],
       database: process.env.POSTGRES_DB,
       synchronize: true,
       logging: true,

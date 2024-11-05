@@ -16,12 +16,14 @@ export default class UserModel {
     private _password:         string | null = null;
     private _password_confirm: string | null = null;
 
-    constructor(user_data: UserType) {
-        this._id = user_data.id;
+    constructor(user_data: UserInCreateType | UserType) {
+        this._id = (user_data as UserType).id || 0;
         this._login = user_data.login;
         this._mail = user_data.mail;
         this._firstname = user_data.firstname;
         this._lastname = user_data.lastname;
+        this._password = (user_data as UserInCreateType).password || null; // Vérifie si c'est un UserInCreateType
+        this._password_confirm = (user_data as UserInCreateType).password_confirmation || null;
     }
 
     /**

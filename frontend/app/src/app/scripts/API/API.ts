@@ -14,7 +14,7 @@ import APIResponse from "./Responses/APIResponse";
 class API {
 
     /** Base API URL. Used to contact the backend application. */
-    public API_URL = "http://localhost:8000";
+    public API_URL = "http://localhost:3000";
 
     /**
      * Instance of the API module. It is used to avoid any duplicates of this class and

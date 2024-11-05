@@ -8,7 +8,7 @@ import {UserInCreateType, UserInPatchType, UserType} from "../APITypes/Users";
  */
 export default class UserAPI {
 
-    static BASE_USER_URL: string = '/users';
+    static BASE_USER_URL: string = '/user';
 
     /**
      * This method sends the request to get personal information about the connected user.

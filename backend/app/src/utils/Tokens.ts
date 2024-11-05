@@ -5,6 +5,7 @@ import jwt, {
   SignOptions,
   TokenExpiredError,
 } from 'jsonwebtoken';
+
 import {
   ExpiredTokenException,
   InvalidTokenException,
@@ -31,16 +32,14 @@ export default class Tokens {
   private refreshToken: string;
 
   // Environnment variables
-  private static readonly authExpireTime: number = Number.parseInt(
-    process.env.JWT_AUTH_EXPIRE,
-  );
-  private static readonly refreshExpireTime: number = Number.parseInt(
-    process.env.JWT_REFRESH_EXPIRE,
-  );
+  private static readonly authExpireTime: number =
+    Number.parseInt(process.env.AUTH_TOKEN_EXPIRE) ?? 3600000;
+  private static readonly refreshExpireTime: number =
+    Number.parseInt(process.env.REFRESH_TOKEN_EXPIRE) ?? 604800000;
   private static readonly jwtAuthKey: string =
-    process.env.JWT_AUTH_TOKEN_SECRET_KEY;
+    process.env.JWT_AUTH_TOKEN_SECRET_KEY ?? '';
   private static readonly jwtRefreshKey: string =
-    process.env.JWT_REFRESH_TOKEN_SECRET_KEY;
+    process.env.JWT_REFRESH_TOKEN_SECRET_KEY ?? '';
   private static readonly algorithm: Algorithm = (process.env.JWT_ALGORITHM ??
     'HS256') as Algorithm;
 
