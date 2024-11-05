@@ -3,9 +3,7 @@ export type EventType = {
     title: string;
     description?: string;
     startDate: Date;
-    endDate?: Date;
-    dayLong?: boolean;
-    recurrence?: string;
+    endDate: Date;
     createdAt?: Date;
     updatedAt?: Date;
     user?: string;
@@ -16,8 +14,6 @@ export type EventInPatchType = {
     description?: string;
     startDate?: Date;
     endDate?: Date;
-    dayLong?: boolean;
-    recurrence?: string;
     user?: string;
 }
 
@@ -26,7 +22,5 @@ export type EventInCreateType = {
     description?: string;
     startDate: Date;
     endDate: Date;
-    dayLong: boolean;
-    recurrence?: string;
     user?: string;
 }

@@ -35,15 +35,6 @@ export class Events {
       })
     endDate?: Date;
     @Prop({
-        type: Boolean,
-      })
-    dayLong?: boolean;
-    @Prop({
-        type: String,
-        trim: true,
-    })
-    recurrence?: string;
-    @Prop({
         type: Date,
         default: Date.now,
       })

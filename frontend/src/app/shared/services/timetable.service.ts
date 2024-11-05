@@ -8,37 +8,29 @@ import EventModel from '../../scripts/Models/EventModel';
   providedIn: 'root'
 })
 export class TimetableService {
-  private usersData: UserType[] = [
-    {
-      id: 1, firstname: 'Alice',
-      login: '',
-      lastname: 'A',
-      mail: ''
-    },
-    {
-      id: 2, firstname: 'Bob',
-      login: '',
-      lastname: 'B',
-      mail: ''
-    },
-    {
-      id: 3, firstname: 'Charlie',
-      login: '',
-      lastname: 'C',
-      mail: ''
-    },
+  private usersData: string[] = [
+    'Alice',
+    'Bob',
+    'Charlie',
   ];
 
-  getUsersData(): UserType[] {
+  getUsersData(): string[] {
     return this.usersData;
   }
   constructor() { }
-  
+
   async getEvents(): Promise<EventModel[] | ErrorResponse<EventType[]>> {
     return await EventModel.getAllEvents();
   }
 
+  async updateEvent(event: EventType): Promise<undefined | ErrorResponse<undefined>> {
+    return await EventModel.updateEvent(event);
+  }
+
   async deleteEvent(id: string): Promise<undefined> {
     await EventModel.deleteEvent(id);
+  }
+  async addEvent(event: EventType): Promise<undefined | ErrorResponse<undefined>>{
+    return await EventModel.createEvent(event);
   }
 }

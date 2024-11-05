@@ -4,6 +4,7 @@ import { TimetableService } from '../shared/services/timetable.service';
 import { EventType } from '../scripts/API/APITypes/Events';
 import { UserType } from '../scripts/API/APITypes/Users';
 import ErrorResponse from '../scripts/API/Responses/ErrorResponse';
+import { AppointmentAddingEvent, AppointmentUpdatingEvent } from 'devextreme/ui/scheduler';
 
 @Component({
   selector: 'app-timetable',
@@ -19,7 +20,7 @@ export class TimetableComponent {
   scheduler!: DxSchedulerComponent;
 
   appointments: EventType[] = [];
-  users: UserType[] = [];
+  users: string[] = [];
   currentDate: Date = new Date();
   data: any;
 
@@ -30,32 +31,24 @@ export class TimetableComponent {
     const eventsResponse = await this.service.getEvents();
     if (eventsResponse instanceof ErrorResponse) {
       console.error("Failed to fetch events:", eventsResponse.errorMessage);
-      this.appointments = []; 
+      this.appointments = [];
     } else {
-      console.log(eventsResponse)
       this.appointments = eventsResponse.map(eventModel => {
         const data = (eventModel.data as any)._doc
         return {
           _id: data._id,
           title: data.title,
-          description: data.description || '', 
+          description: data.description || '',
           startDate: new Date(data.startDate),
           endDate: new Date(data.endDate),
-          dayLong: data.dayLong || false,
-          recurrence: data.recurrence || '',
           createdAt: new Date(data.createdAt),
           updatedAt: new Date(data.updatedAt),
-          user: data.user || 'Unknown'
+          user: data.user
         };
       });
     }
-  
-    this.users = await this.service.getUsersData();
-  }
 
-  getFullName(userId: number): string {
-    const user = this.users.find(u => u.id === userId);
-    return user ? `${user.firstname} ${user.lastname}` : '';
+    this.users = await this.service.getUsersData();
   }
 
   onAppointmentFormOpening(e: any) {
@@ -66,48 +59,61 @@ export class TimetableComponent {
 
     const form = e.form;
     let mainGroupItems = form.itemOption('mainGroup').items;
-    const userFieldExists = mainGroupItems.some((i: any) => i.dataField === "userId");
+    mainGroupItems[2].visible = false;
+    const userFieldExists = mainGroupItems.some((i: any) => i.dataField === "user");
     if (!userFieldExists) {
       mainGroupItems.push({
         colSpan: 2,
         label: { text: "User" },
         editorType: "dxSelectBox",
-        dataField: "userId",
+        dataField: "user",
         editorOptions: {
           items: this.users,
-          displayExpr: 'firstname',
-          valueExpr: 'id',
-          value: e.appointmentData.userId,
+          displayExpr: (user: string) => user,
+          valueExpr: (user: string) => user,
+          value: e.appointmentData.user,
         },
       });
       form.itemOption('mainGroup', 'items', mainGroupItems);
     }
   }
 
-  getUserById(id: number) {
-    return this.users.find(user => user.id === id);
-  }
-
-
-
-  onAppointmentAdded(event: any) {
-    const appointment = event.appointmentData;
-    console.log(appointment);
-  }
-
-  onAppointmentUpdated(event: any) {
-    //TODO Handler of the "appointmentUpdated" event
-  }
   onDeleteAppointment(appointmentData: any, event: Event) {
     event.stopPropagation();
     this.service.deleteEvent(appointmentData._id)
     this.scheduler.instance.deleteAppointment(appointmentData);
     this.scheduler.instance.hideAppointmentTooltip();
   }
-  isDeleteButtonExist(_t13: any) {
-    throw new Error('Method not implemented.');
+
+  onAppointmentUpdating(event: AppointmentUpdatingEvent) {
+    const appointment = event.newData;
+
+    const updatedAppointment: EventType = {
+      ...appointment,
+      title: appointment.title,
+      startDate: appointment.startDate,
+      endDate: appointment.endDate,
+      user: appointment.user ?? 'Unknown User',
+      createdAt: appointment.createdAt,
+      updatedAt: new Date(),
+      description: appointment.description
+    };
+    this.service.updateEvent(updatedAppointment);
   }
-  onDeleteButtonClick($event: Event, arg1: any) {
-    throw new Error('Method not implemented.');
+
+
+  onAppointmentAdding(event: AppointmentAddingEvent) {
+    const appointment: any = event.appointmentData;
+    const newAppointment: EventType = {
+      ...appointment,
+      title: appointment.title,
+      startDate: appointment.startDate,
+      endDate: appointment.endDate,
+      user: appointment.user ?? 'Unknown User',
+      createdAt: appointment.createdAt,
+      updatedAt: new Date(),
+      description: appointment.description || '',
+    };
+    this.service.addEvent(newAppointment);
   }
 }
