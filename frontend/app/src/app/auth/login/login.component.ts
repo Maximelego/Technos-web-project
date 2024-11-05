@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 import AuthModel from '../../scripts/Models/AuthModel';
 import { TokenPair } from '../../scripts/API/APITypes/Tokens';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,17 +17,17 @@ export class LoginComponent {
     password: '',
   };
   
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
   }
 
   async onSubmit() {
     try {
       await this.authService.login(this.loginData.login, this.loginData.password);
-      // Ici, tu peux gérer la redirection ou afficher un message de succès après la connexion.
-      console.log('Connexion réussie');
+      this.snackBar.open('Connexion réussie', 'Fermer', { duration: 3000 });
+      this.router.navigate(['/dashboard']);
+
     } catch (error) {
-      console.error('Échec de la connexion', error);
-      // Gérer l'erreur, par exemple, afficher un message d'erreur à l'utilisateur.
+      this.snackBar.open('Échec de la connexion: Login ou password est incorrect ', 'Fermer', { duration: 3000 });
     }
   }
 }

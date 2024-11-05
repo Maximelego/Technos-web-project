@@ -4,6 +4,7 @@ import {HTTPMethod} from "../Enums/HTTPMethod";
 
 import {ConfirmationMessage} from "../APITypes/CommonTypes";
 import APIResponse from "../Responses/APIResponse";
+import { ContentType } from "../Enums/ContentType";
 
 /**
  * API methods for auth endpoints.
@@ -20,15 +21,16 @@ export default class AuthAPI {
      * @returns A promise that is either a pair of token or an error.
      */
     static loginRequest(login: string, password: string): Promise<APIResponse<TokenPair>> {
+        
         const body = {
-            username: login,
+            login: login,
             password: password,
         }
         return api.request<TokenPair>(
             HTTPMethod.POST,
             AuthAPI.BASE_AUTH_URL + "/login",
             JSON.stringify(body),
-            undefined,
+            ContentType.JSON,
             undefined
         );
     }

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 import UserModel from '../../scripts/Models/UserModel';
 import { UserInCreateType } from '../../scripts/API/APITypes/Users';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +21,7 @@ export class RegisterComponent {
     password_confirmation: '',
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private snackBar: MatSnackBar, private router: Router) {}
 
   
   async onSubmit() {
@@ -39,11 +41,10 @@ export class RegisterComponent {
 
     try {
       await this.authService.register(userModel);
-      // Ici, tu peux gérer la redirection ou afficher un message de succès après l'inscription.
-      console.log('Inscription réussie');
+      this.snackBar.open('Connexion réussie', 'Fermer', { duration: 3000 });
+      this.router.navigate(['/login']);
     } catch (error) {
-      console.error('Échec de l\'inscription', error);
-      // Gérer l'erreur, par exemple, afficher un message d'erreur à l'utilisateur.
+      this.snackBar.open('Échec de l\'inscription', 'Fermer', { duration: 3000 });
     }
   }
 

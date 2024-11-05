@@ -17,7 +17,9 @@ export class AuthService {
     const response : APIResponse<TokenPair> = await authModel.login();
 
     if (!response.isError()) {
-      // Traiter le succès de la connexion (stockage des tokens, etc.)
+      const tokenPair = response.responseObject as unknown as TokenPair;
+      localStorage.setItem('access_token', tokenPair.access_token);
+      localStorage.setItem('refresh_token', tokenPair.refresh_token);
     } else {
       // Gérer l'erreur
       console.error(response);
@@ -44,10 +46,14 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await AuthModel.logout();
-    // Optionnel : rediriger l'utilisateur après la déconnexion
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   }
 
   async refreshTokens(): Promise<void> {
     await AuthModel.refreshTokens();
   }
+
+
+  
 }
