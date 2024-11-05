@@ -1,6 +1,6 @@
 <dx-scheduler [dataSource]="appointments" [(currentDate)]="currentDate" textExpr="title" allDayExpr="dayLong"
   recurrenceRuleExpr="recurrence" currentView="week" [crossScrollingEnabled]="true" recurrenceEditMode="occurrence"
-  [adaptivityEnabled]="true" [showAllDayPanel]="false" [cellDuration]="20" [height]="600"
+  [adaptivityEnabled]="true" [showAllDayPanel]="true" [cellDuration]="20" [height]="600"
   appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
   (onAppointmentAdding)="onAppointmentAdding($event)" (onAppointmentFormOpening)="onAppointmentFormOpening($event)" 
   (onAppointmentUpdating)="onAppointmentUpdating($event)">
