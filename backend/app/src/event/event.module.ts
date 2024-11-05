@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     TypeOrmModule.forFeature([EventType]),
     ],
+  controllers: [EventController],
   providers: [EventService, EventDao],
   exports: [EventService, EventDao]
 })
