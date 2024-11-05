@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { User } from './user/entities/user.entity';
 
 ConfigModule.forRoot().then();
 
@@ -16,7 +17,7 @@ ConfigModule.forRoot().then();
       port: Number.parseInt(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
-      entities: [],
+      entities: [User],
       database: process.env.POSTGRES_DB,
       synchronize: true,
       logging: true,
