@@ -1,12 +1,11 @@
 import TokenPairDto from '../auth/dto/tokens.dto';
-import {
+import jwt, {
   Algorithm,
   JsonWebTokenError,
   SignOptions,
   TokenExpiredError,
 } from 'jsonwebtoken';
 
-import * as jwt from 'jsonwebtoken';
 import {
   ExpiredTokenException,
   InvalidTokenException,
@@ -33,16 +32,14 @@ export default class Tokens {
   private refreshToken: string;
 
   // Environnment variables
-  private static readonly authExpireTime: number = Number.parseInt(
-    process.env.AUTH_TOKEN_EXPIRE,
-  ) ?? 3600000 ;
-  private static readonly refreshExpireTime: number = Number.parseInt(
-    process.env.REFRESH_TOKEN_EXPIRE,
-  ) ?? 604800000;
+  private static readonly authExpireTime: number =
+    Number.parseInt(process.env.AUTH_TOKEN_EXPIRE) ?? 3600000;
+  private static readonly refreshExpireTime: number =
+    Number.parseInt(process.env.REFRESH_TOKEN_EXPIRE) ?? 604800000;
   private static readonly jwtAuthKey: string =
-    process.env.JWT_AUTH_TOKEN_SECRET_KEY ?? '02f228e5cd08f1f3c66d2f216371e560e8a5449ee4384ab37d830b797c20a835';
+    process.env.JWT_AUTH_TOKEN_SECRET_KEY ?? '';
   private static readonly jwtRefreshKey: string =
-    process.env.JWT_REFRESH_TOKEN_SECRET_KEY ?? '69a2d98a4a2415a5a8b8424e943244603d7f881bfa46f52a0f6163954a55a34b' ;
+    process.env.JWT_REFRESH_TOKEN_SECRET_KEY ?? '';
   private static readonly algorithm: Algorithm = (process.env.JWT_ALGORITHM ??
     'HS256') as Algorithm;
 
