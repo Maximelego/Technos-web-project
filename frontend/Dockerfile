@@ -3,8 +3,13 @@ FROM node:20.18 AS build-stage
 
 WORKDIR /app
 
+# Disable Angular CLI analytics to avoid prompts
+ENV NG_CLI_ANALYTICS=false
+
 # Copy package.json and package-lock.json to the working directory
 COPY ./app/package*.json ./
+
+RUN npm install -g @angular/cli
 
 # Install dependencies
 RUN npm install
@@ -25,7 +30,7 @@ FROM nginx:latest
 COPY ./app/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the build artifacts from the build stage to NGINX web server
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist/frontend/browser /usr/share/nginx/html
 
 # Expose port 80 for the NGINX server
 EXPOSE 80
