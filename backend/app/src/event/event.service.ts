@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { defaultIfEmpty, filter, firstValueFrom, map, Observable, of } from 'rxjs';
 import { EventInCreateType, EventInPatchType, EventType } from './event.entity';
 import { EventDao } from './event.dao';
-import { Events } from './event.schemas';
 import { ErrorResponse } from 'src/errorReponse.type';
 
 const appointments: EventType[] = [

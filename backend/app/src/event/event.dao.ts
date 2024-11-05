@@ -1,8 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { catchError, from, map, Observable, of, switchMap, tap } from "rxjs";
-import { Model } from 'mongoose';
-import { Events, EventsDocument } from "./event.schemas";
-import { InjectModel } from "@nestjs/mongoose";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { EventType } from "./event.entity";

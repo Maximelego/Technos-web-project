@@ -14,7 +14,6 @@ import {
 import { Observable } from 'rxjs';
 import { EventInCreateType, EventInPatchType, EventType } from './event.entity';
 import { EventService } from './event.service';
-import { Events } from './event.schemas';
 import { ErrorResponse } from 'src/errorReponse.type';
 
 
@@ -146,7 +145,7 @@ export class EventController {
   })
   @Delete(':id')
   @HttpCode(HttpStatus.OK) 
-  async delete(@Param('id') id: string): Promise<Events | undefined> {
+  async delete(@Param('id') id: string): Promise<EventType | undefined> {
     const deletedEvent = await this.eventService.delete(id).toPromise();
     if (!deletedEvent) {
         throw new NotFoundException(`Event with ID ${id} not found`);
