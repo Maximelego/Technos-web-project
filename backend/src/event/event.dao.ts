@@ -1,77 +1,78 @@
 import { Injectable } from "@nestjs/common";
-import { from, map, Observable } from "rxjs";
+import { catchError, from, map, Observable, of, switchMap, tap } from "rxjs";
 import { Model } from 'mongoose';
 import { Events, EventsDocument } from "./event.schemas";
 import { InjectModel } from "@nestjs/mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { EventType } from "./event.entity";
+
 /**
- * Data Access Object (DAO) for managing event data.
- * 
- * This class provides methods for performing CRUD operations 
- * on the Events collection in a MongoDB database using Mongoose.
- * 
- * @module EventDao
- * @requires { Injectable } from "@nestjs/common"
- * @requires { from, map, Observable } from "rxjs"
- * @requires { Model } from 'mongoose'
- * @requires { Events, EventsDocument } from "./event.schemas"
- * @requires { InjectModel } from "@nestjs/mongoose"
+ * Data Access Object (DAO) for managing event data with PostgreSQL using TypeORM.
  */
 @Injectable()
 export class EventDao {
-  /**
-  * Creates an instance of EventDao.
-  * @param {Model<Events>} eventModel - The Mongoose model for Events.
-  */
   constructor(
-    @InjectModel(Events.name)
-    private readonly eventModel: Model<Events>,
+    @InjectRepository(EventType)
+    private readonly eventRepository: Repository<EventType>,
   ) { }
 
   /**
-  * Retrieves all events from the database.
-  * @returns {Observable<Event[]>} An observable that emits an array of events.
-  */
-  find = (): Observable<Event[]> =>
-    from(this.eventModel.find({})).pipe(map((event) => [].concat(event)));
+   * Retrieves all events from the database.
+   * @returns {Observable<EventType[]>} An observable that emits an array of events.
+   */
+  find = (): Observable<EventType[]> =>
+    from(this.eventRepository.find());
 
   /**
-  * Deletes an event by its ID.
-  * @param {string} _id - The ID of the event to delete.
-  * @returns {Observable<Events | undefined>} An observable that emits the deleted event or undefined if not found.
-  */
-  findByIdAndRemove = (_id: string): Observable<Events | undefined> =>
-    from(this.eventModel.findByIdAndDelete(_id).exec());
-
-  /**
-  * Finds an event by its ID.
-  * @param {string} id - The ID of the event to find.
-  * @returns {Observable<Events | void>} An observable that emits the found event or void if not found.
-  */
-  findById = (id: string): Observable<Events | void> =>
-    from(this.eventModel.findById(id));
-
-  /**
-  * Saves a new event to the database.
-  * @param {Events} event - The event to save.
-  * @returns {Observable<Events>} An observable that emits the saved event.
-  */
-  save = (event: Events): Observable<Events> =>
-    from(new this.eventModel(event).save());
-
-  /**
-  * Updates an event by its ID.
-  * @param {string} id - The ID of the event to update.
-  * @param {Events} event - The updated event data.
-  * @returns {Observable<Events | void>} An observable that emits the updated event or void if not found.
-  */
-  findByIdAndUpdate = (
-    id: string,
-    event: Events,
-  ): Observable<Events | void> =>
-    from(
-      this.eventModel.findByIdAndUpdate(id, event, {
-        new: true,
-        runValidators: true,
-      }).exec(),
+   * Deletes an event by its ID.
+   * @param {string} _id - The ID of the event to delete.
+   * @returns {Observable<EventType | undefined>} An observable that emits the deleted event or undefined if not found.
+   */
+  findByIdAndRemove = (_id: string): Observable<EventType | undefined> =>
+    from(this.eventRepository.findOneBy({ _id })).pipe(
+      switchMap(event => {
+        if (!event) {
+          return of(undefined);
+        }
+        return from(this.eventRepository.remove(event));
+      })
     );
+
+  /**
+   * Finds an event by its ID.
+   * @param {string} _id - The ID of the event to find.
+   * @returns {Observable<EventType | void>} An observable that emits the found event or void if not found.
+   */
+  findById = (_id: string): Observable<EventType | void> =>
+    from(this.eventRepository.findOneBy({ _id }));
+
+  /**
+   * Saves a new event to the database.
+   * @param {EventType} event - The event to save.
+   * @returns {Observable<EventType>} An observable that emits the saved event.
+   */
+  save = (event: EventType): Observable<EventType> =>
+    from(this.eventRepository.save(event));
+
+  /**
+   * Updates an event by its ID.
+   * @param {string} _id - The ID of the event to update.
+   * @param {EventType} event - The updated event data.
+   * @returns {Promise<EventType | void>} 
+   */
+ 
+    async findByIdAndUpdate(_id: string, eventData:EventType): Promise<EventType | void> {
+      const preloadedEvent = await this.eventRepository.preload({
+          _id, 
+          ...eventData, 
+      });
+  
+      if (preloadedEvent) {
+          return await this.eventRepository.save(preloadedEvent);
+      } else {
+          console.error(`Event with ID ${_id} not found.`);
+          return undefined; 
+      }
+  }
 }

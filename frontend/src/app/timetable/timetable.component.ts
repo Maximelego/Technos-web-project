@@ -34,7 +34,8 @@ export class TimetableComponent {
       this.appointments = [];
     } else {
       this.appointments = eventsResponse.map(eventModel => {
-        const data = (eventModel.data as any)._doc
+        const data = (eventModel.data as any) //._doc
+
         return {
           _id: data._id,
           title: data.title,
@@ -45,7 +46,7 @@ export class TimetableComponent {
           updatedAt: new Date(data.updatedAt),
           user: data.user
         };
-      });
+      }).filter(Boolean);
     }
 
     this.users = await this.service.getUsersData();
@@ -78,14 +79,15 @@ export class TimetableComponent {
     }
   }
 
-  onDeleteAppointment(appointmentData: any, event: Event) {
+  async onDeleteAppointment(appointmentData: any, event: Event) {
     event.stopPropagation();
-    this.service.deleteEvent(appointmentData._id)
+    await this.service.deleteEvent(appointmentData._id)
     this.scheduler.instance.deleteAppointment(appointmentData);
     this.scheduler.instance.hideAppointmentTooltip();
+    await this.initializeData();
   }
 
-  onAppointmentUpdating(event: AppointmentUpdatingEvent) {
+  async onAppointmentUpdating(event: AppointmentUpdatingEvent) {
     const appointment = event.newData;
 
     const updatedAppointment: EventType = {
@@ -94,15 +96,14 @@ export class TimetableComponent {
       startDate: appointment.startDate,
       endDate: appointment.endDate,
       user: appointment.user ?? 'Unknown User',
-      createdAt: appointment.createdAt,
-      updatedAt: new Date(),
       description: appointment.description
     };
-    this.service.updateEvent(updatedAppointment);
+    await  this.service.updateEvent(updatedAppointment);
+    await this.initializeData();
   }
 
 
-  onAppointmentAdding(event: AppointmentAddingEvent) {
+  async onAppointmentAdding(event: AppointmentAddingEvent) {
     const appointment: any = event.appointmentData;
     const newAppointment: EventType = {
       ...appointment,
@@ -114,6 +115,7 @@ export class TimetableComponent {
       updatedAt: new Date(),
       description: appointment.description || '',
     };
-    this.service.addEvent(newAppointment);
+    await this.service.addEvent(newAppointment);
+    await this.initializeData();
   }
 }

@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Post, Put, UseInterceptors } from '@nestjs/common';
 import {
   ApiTags,
   ApiOkResponse,
@@ -145,8 +145,13 @@ export class EventController {
     allowEmptyValue: false,
   })
   @Delete(':id')
+  @HttpCode(HttpStatus.OK) 
   async delete(@Param('id') id: string): Promise<Events | undefined> {
-    return this.eventService.delete(id).toPromise();
+    const deletedEvent = await this.eventService.delete(id).toPromise();
+    if (!deletedEvent) {
+        throw new NotFoundException(`Event with ID ${id} not found`);
+    }
+    return deletedEvent;
   }
 }
 

@@ -66,7 +66,7 @@ export class EventService {
    */
   findAll = (): Observable<EventType[] | void> => this.eventsDao.find().pipe(
     filter(Boolean),
-    map((events) => (events || []).map((event) => new EventType(event as Partial<Events>))),
+    map((events) => (events || []).map((event) => new EventType(event as Partial<EventType>))),
     defaultIfEmpty(undefined),
   );
 
@@ -75,7 +75,7 @@ export class EventService {
   * @param id - Unique identifier of the event to delete.
   * @returns Observable containing the deleted event or undefined.
   */
-  delete = (id: string): Observable<Events | undefined> =>
+  delete = (id: string): Observable<EventType | undefined> =>
     this.eventsDao.findByIdAndRemove(id);
 
   /**
@@ -89,13 +89,12 @@ export class EventService {
     event: EventInPatchType
   ): Promise<undefined | ErrorResponse<undefined>> => {
     try {
-      const updatedEvent: Events = {
+      const updatedEvent: EventType = {
         title: event.title,
         startDate: event.startDate,
         description: event.description,
         endDate: event.endDate,
-        user: event.user,
-        updatedAt: new Date()
+        user: event.user
       }
       await this.eventsDao.findByIdAndUpdate(id, updatedEvent);
 
@@ -117,7 +116,7 @@ export class EventService {
     event: EventInCreateType
   ): Promise<undefined | ErrorResponse<undefined>> => {
     try {
-      const addedEvent: Events = {
+      const addedEvent: EventType = {
         title: event.title,
         startDate: event.startDate,
         description: event.description,

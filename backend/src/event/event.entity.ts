@@ -6,85 +6,81 @@ import {
   } from 'class-validator';
 import { Events } from './event.schemas';
 import { ApiProperty } from '@nestjs/swagger';
-export class EventType{
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
+@Entity()
+export class EventType {
   @ApiProperty({
     description: 'The unique identifier of the event',
     required: false,
     type: String,
   })
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    _id?: string;
-    @ApiProperty({
-      description: 'The title of the event',
-      required: true,
-      type: String,
-    })
-    @IsString()
-    @IsNotEmpty()
-    title: string;
-    @ApiProperty({
-      description: 'The description of the event',
-      required: false,
-      type: String,
-    })
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    description?: string;
-    @ApiProperty({
-      description: 'The start date and time of the event',
-      required: true,
-      type: Date,
-      format: 'date-time',
-    })
-    @IsDate()
-    @IsNotEmpty()
-    startDate: Date;
-    @ApiProperty({
-      description: 'The end date and time of the event',
-      required: false,
-      type: Date,
-      format: 'date-time',
-    })
-    @IsDate()
-    @IsNotEmpty()
-    @IsOptional()
-    endDate?: Date;
-    @ApiProperty({
-      description: 'The date and time when the event was created',
-      required: false,
-      type: Date,
-      format: 'date-time',
-    })
-    @IsDate()
-    @IsNotEmpty()
-    @IsOptional()
-    @ApiProperty({
-      description: 'The date and time when the event was last updated',
-      required: false,
-      type: Date,
-      format: 'date-time',
-    })
-    createdAt?: Date;
-    @IsDate()
-    @IsNotEmpty()
-    @IsOptional()
-    @ApiProperty({
-      description: 'The user associated with the event',
-      required: false,
-      type: String,
-    })
-    updatedAt?: Date;
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    user?: string;
+  @PrimaryGeneratedColumn('uuid')
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  _id?: string;
 
-    constructor(partial: Partial<Events>) {
-        Object.assign(this, partial);
-      }
+  @ApiProperty({
+    description: 'The title of the event',
+    required: true,
+    type: String,
+  })
+  @Column()
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @ApiProperty({
+    description: 'The description of the event',
+    required: false,
+    type: String,
+  })
+  @Column({ nullable: true })
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @ApiProperty({
+    description: 'The start date and time of the event',
+    required: true,
+    type: Date,
+    format: 'date-time',
+  })
+  @Column()
+  @IsDate()
+  @IsNotEmpty()
+  startDate: Date;
+
+  @ApiProperty({
+    description: 'The end date and time of the event',
+    required: false,
+    type: Date,
+    format: 'date-time',
+  })
+  @Column({ nullable: true })
+  @IsDate()
+  @IsOptional()
+  endDate?: Date;
+
+  @CreateDateColumn()
+  @IsDate()
+  @IsOptional()
+  createdAt?: Date;
+
+  @UpdateDateColumn()
+  @IsDate()
+  @IsOptional()
+  updatedAt?: Date;
+
+  @Column({ nullable: true })
+  @IsString()
+  @IsOptional()
+  user?: string;
+
+  constructor(partial: Partial<EventType>) {
+    Object.assign(this, partial);
+  }
 }
 
 export type EventInPatchType = {
