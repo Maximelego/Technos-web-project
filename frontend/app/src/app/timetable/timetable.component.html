@@ -1,0 +1,33 @@
+<dx-scheduler [dataSource]="appointments" [(currentDate)]="currentDate" textExpr="title" allDayExpr="dayLong"
+  recurrenceRuleExpr="recurrence" currentView="week" [crossScrollingEnabled]="true" recurrenceEditMode="occurrence"
+  [adaptivityEnabled]="true" [showAllDayPanel]="true" [cellDuration]="20" [height]="600"
+  appointmentTemplate="appointment-template" appointmentTooltipTemplate="tooltip-template"
+  (onAppointmentAdding)="onAppointmentAdding($event)" (onAppointmentFormOpening)="onAppointmentFormOpening($event)" 
+  (onAppointmentUpdating)="onAppointmentUpdating($event)">
+
+  <dxi-view type="day" [startDayHour]="6" [endDayHour]="23"></dxi-view>
+  <dxi-view type="week" [startDayHour]="8" [endDayHour]="23"></dxi-view>
+  <dxi-view type="month"></dxi-view>
+
+  <dxo-editing [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
+  </dxo-editing>
+
+
+
+  <div *dxTemplate="let model of 'appointment-template'">
+    <div>
+      <strong>{{ model.appointmentData.title }}</strong><br>
+      <span>User: {{ model.appointmentData.user }} </span><br>
+      <span>Description: {{ model.appointmentData.description }}</span><br>
+    </div>
+  </div>
+
+  <div *dxTemplate="let model of 'tooltip-template'">
+    <div>
+      <strong>{{ model.appointmentData.title }}</strong><br>
+      <span>User: {{ model.appointmentData.user }} </span><br>
+      <span>Description: {{ model.appointmentData.description }}</span><br>
+      <button (click)="onDeleteAppointment(model.appointmentData, $event)">Delete</button>
+    </div>
+  </div>
+</dx-scheduler>

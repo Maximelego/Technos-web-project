@@ -5,7 +5,7 @@ import ErrorResponse from '../API/Responses/ErrorResponse';
 
 export default class EventModel {
 
-    constructor(data: EventType) {
+    constructor(public data: EventType) {
 
     }
 
@@ -42,20 +42,32 @@ export default class EventModel {
         return result;
     }
 
-    async createEvent(): Promise<undefined | ErrorResponse<undefined>> {
-        const body: EventInCreateType = {} // TODO
+    static async createEvent(event: EventType): Promise<undefined | ErrorResponse<undefined>> {
+        const body: EventInCreateType = {
+            title: event.title,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            description: event.description,
+            user: event.user
+        }
         const response: APIResponse<undefined> = await EventAPI.createEvent(body);
         return response.isError() ? response as ErrorResponse<undefined> : undefined;
     }
 
-    async updateEvent(): Promise<undefined | ErrorResponse<undefined>> {
-        const body: EventInPatchType = {} // TODO
-        const response: APIResponse<undefined> = await EventAPI.updateEvent(0, body);   // TODO
+    static async updateEvent(event: EventType): Promise<undefined | ErrorResponse<undefined>> {
+        const body: EventInPatchType = {
+            title: event.title,
+            description: event.description,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            user: event.user
+        }
+        const response: APIResponse<undefined> = await EventAPI.updateEvent(event._id, body);
         return response.isError() ? response as ErrorResponse<undefined> : undefined;
     }
 
-    async deleteEvent(): Promise<undefined | ErrorResponse<undefined>> {
-        const response: APIResponse<undefined> = await EventAPI.deleteEvent(0); // TODO
+    static async deleteEvent(id: string): Promise<undefined | ErrorResponse<undefined>> {
+        const response: APIResponse<undefined> = await EventAPI.deleteEvent(id);
         return response.isError() ? response as ErrorResponse<undefined> : undefined;
     }
 }

@@ -56,7 +56,7 @@ export default class EventAPI {
         );
     }
 
-    static deleteEvent(id: number): Promise<APIResponse<undefined>>  {
+    static deleteEvent(id: string): Promise<APIResponse<undefined>>  {
         return api.requestLogged<undefined>(
             HTTPMethod.DELETE,
             EventAPI.BASE_EVENT_URL + `/${id}`,

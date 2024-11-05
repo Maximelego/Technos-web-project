@@ -63,6 +63,7 @@ class API {
             "Accept": ContentType.JSON,                 // <- Indicates what data the application accepts
             "Origin": window.location.origin,
         };
+        console.log(window.location.origin)
         // Checking if content-type needs to be specified.
         if (supplied_content_type !== ContentType.FORM_DATA ) { header["Content-Type"] = supplied_content_type; }
         // Adding eventual headers.
