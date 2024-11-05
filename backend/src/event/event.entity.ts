@@ -8,9 +8,10 @@ import {
   } from 'class-validator';
 import { Events } from './event.schemas';
 export class EventType{
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    id: number;
+    @IsOptional()
+    _id?: string;
     @IsString()
     @IsNotEmpty()
     title: string;

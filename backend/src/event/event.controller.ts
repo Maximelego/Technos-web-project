@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
 import {
     ApiNoContentResponse,
     ApiOkResponse,
@@ -6,9 +6,10 @@ import {
 import { Observable } from 'rxjs';
 import { EventType } from './event.entity';
 import { EventService } from './event.service';
+import { Events } from './event.schemas';
 
 
-@Controller('event')
+@Controller('events')
 export class EventController {
     constructor(private readonly eventService: EventService) {}
     @ApiOkResponse({
@@ -20,5 +21,11 @@ export class EventController {
       @Get()
       findAll(): Observable<EventType[] | void> {
         return this.eventService.findAll();
+      }
+
+      
+      @Delete(':id')
+      async delete(@Param('id') id: string): Promise<Events | undefined> {
+         return this.eventService.delete(id).toPromise();
       }
 }

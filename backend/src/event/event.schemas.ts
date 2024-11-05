@@ -14,11 +14,6 @@ export type EventsDocument = Events & Document;
 })
 export class Events {
     @Prop({
-        type: Number,
-        auto: true,
-    })
-    id: number;
-    @Prop({
         type: String,
         required: true,
         minlength: 2,
