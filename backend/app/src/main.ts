@@ -23,7 +23,7 @@ async function bootstrap( ) {
       credentials: true,
   });
 
-  await app.listen(process.env.PORT ?? 8000);
+  await app.listen(process.env.API_SERVER_PORT ?? 3000);
   
 }
 
