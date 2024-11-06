@@ -32,11 +32,11 @@ services:
     networks:
       - technosweb_net
 
-  api:
+  nest:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nest-api
+    container_name: nest
     command: sh -c "/wait && npm run start:prod"
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -87,4 +87,3 @@ volumes:
 
 networks:
   technosweb_net:
-    driver: bridge
