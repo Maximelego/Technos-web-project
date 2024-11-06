@@ -24,7 +24,7 @@ export class LoginComponent {
     try {
       await this.authService.login(this.loginData.login, this.loginData.password);
       this.snackBar.open('Connexion réussie', 'Fermer', { duration: 3000 });
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/timetable']);
 
     } catch (error) {
       this.snackBar.open('Échec de la connexion: Login ou password est incorrect ', 'Fermer', { duration: 3000 });
