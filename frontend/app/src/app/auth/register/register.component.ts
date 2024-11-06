@@ -23,7 +23,7 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService,private snackBar: MatSnackBar, private router: Router) {}
 
-  
+
   async onSubmit() {
     const userModel = new UserModel({
       id: 0, // ou une valeur par défaut, selon ton implémentation
@@ -34,10 +34,6 @@ export class RegisterComponent {
       password: this.registerData.password,
       password_confirmation: this.registerData.password_confirmation,
     });
-    if(this.registerData.password != null){
-
-    }
-    
 
     try {
       await this.authService.register(userModel);
@@ -48,5 +44,5 @@ export class RegisterComponent {
     }
   }
 
-  
+
 }
