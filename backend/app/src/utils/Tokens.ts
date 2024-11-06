@@ -1,16 +1,7 @@
-import TokenPairDto from '../auth/dto/tokens.dto';
-import jwt, {
-  Algorithm,
-  JsonWebTokenError,
-  SignOptions,
-  TokenExpiredError,
-} from 'jsonwebtoken';
+import { TokenPairDto } from '../auth/dto/tokens.dto';
+import jwt, { Algorithm, JsonWebTokenError, SignOptions, TokenExpiredError } from 'jsonwebtoken';
 
-import {
-  ExpiredTokenException,
-  InvalidTokenException,
-  TokenRevokedException,
-} from './HTTPExceptions';
+import { ExpiredTokenException, InvalidTokenException, TokenRevokedException } from './HTTPExceptions';
 import { RedisInterface } from './Redis';
 import { ConfigModule } from '@nestjs/config';
 
@@ -49,10 +40,10 @@ export default class Tokens {
   }
 
   toDto(): TokenPairDto {
-    const dto: TokenPairDto = new TokenPairDto();
-    dto.access_token = this.accessToken;
-    dto.refresh_token = this.refreshToken;
-    return dto;
+    return {
+      access_token: this.accessToken,
+      refresh_token: this.refreshToken,
+    };
   }
 
   async invalidateTokens(): Promise<void> {
