@@ -63,7 +63,6 @@ class API {
             "Accept": ContentType.JSON,                 // <- Indicates what data the application accepts
             "Origin": window.location.origin,
         };
-        console.log(window.location.origin)
         // Checking if content-type needs to be specified.
         if (supplied_content_type !== ContentType.FORM_DATA ) { header["Content-Type"] = supplied_content_type; }
         // Adding eventual headers.
@@ -127,12 +126,19 @@ class API {
                 // Logout the user, redirect to login page, etc... are handled by the refresh tokens method
                 this.refreshLock = AuthModel.refreshTokens()
                     .then(() => { this.isRefreshing = false });
+
+                // Wait for the current refresh to complete before continuing
+                await this.refreshLock;
+                authHeader = {['Authorization'] : `Bearer ${ Storage.getAccessTokenFromStorage() }`};
+                return await this.request<T>(method, url, body, content_type, authHeader);
             }
+            return response;
+        } else {
+            // Wait for the current refresh to complete before continuing
+            await this.refreshLock;
+            authHeader = {['Authorization'] : `Bearer ${ Storage.getAccessTokenFromStorage() }`};
+            return await this.request<T>(method, url, body, content_type, authHeader);
         }
-        // Wait for the current refresh to complete before continuing
-        await this.refreshLock;
-        authHeader = {['Authorization'] : `Bearer ${ Storage.getAccessTokenFromStorage() }`};
-        return await this.request<T>(method, url, body, content_type, authHeader);
     }
 }
 export const api = new API();
