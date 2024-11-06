@@ -1,11 +1,22 @@
 import { TokenPairDto } from '../auth/dto/tokens.dto';
-import jwt, { Algorithm, JsonWebTokenError, SignOptions, TokenExpiredError } from 'jsonwebtoken';
+import {
+  Algorithm,
+  JsonWebTokenError,
+  sign,
+  SignOptions,
+  TokenExpiredError,
+  verify,
+} from 'jsonwebtoken';
 
-import { ExpiredTokenException, InvalidTokenException, TokenRevokedException } from './HTTPExceptions';
+import {
+  ExpiredTokenException,
+  InvalidTokenException,
+  TokenRevokedException,
+} from './HTTPExceptions';
 import { RedisInterface } from './Redis';
 import { ConfigModule } from '@nestjs/config';
 
-ConfigModule.forRoot();
+ConfigModule.forRoot().then();
 
 enum TokenTypes {
   AUTH_TOKEN = 'AUTH_TOKEN',
@@ -49,14 +60,14 @@ export default class Tokens {
   async invalidateTokens(): Promise<void> {
     await RedisInterface.revoke(
       this.accessToken,
-      jwt.verify(this.accessToken, Tokens.jwtAuthKey, {
+      verify(this.accessToken, Tokens.jwtAuthKey, {
         algorithms: [Tokens.algorithm],
       }) as TokenPayload,
     );
 
     await RedisInterface.revoke(
       this.refreshToken,
-      jwt.verify(this.refreshToken, Tokens.jwtAuthKey, {
+      verify(this.refreshToken, Tokens.jwtAuthKey, {
         algorithms: [Tokens.algorithm],
       }) as TokenPayload,
     );
@@ -64,7 +75,7 @@ export default class Tokens {
 
   async refreshTokens(): Promise<void> {
     try {
-      const tokenPayload: TokenPayload = jwt.verify(
+      const tokenPayload: TokenPayload = verify(
         this.refreshToken,
         Tokens.jwtAuthKey,
         { algorithms: [Tokens.algorithm] },
@@ -125,10 +136,10 @@ export default class Tokens {
     switch (tokenType) {
       case TokenTypes.AUTH_TOKEN:
         payload.exp = payload.iat + Math.floor(Tokens.authExpireTime / 1000);
-        return jwt.sign(payload, Tokens.jwtAuthKey, options);
+        return sign(payload, Tokens.jwtAuthKey, options);
       case TokenTypes.REFRESH_TOKEN:
         payload.exp = payload.iat + Math.floor(Tokens.refreshExpireTime / 1000);
-        return jwt.sign(payload, Tokens.jwtRefreshKey, options);
+        return sign(payload, Tokens.jwtRefreshKey, options);
       default:
         return '';
     }
