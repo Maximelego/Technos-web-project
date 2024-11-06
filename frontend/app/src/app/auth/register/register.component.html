@@ -1,0 +1,33 @@
+<form (ngSubmit)="onSubmit()" #registerForm="ngForm" style="display: flex; flex-direction: column; width: 400px; margin: auto;">
+  <mat-form-field appearance="outline">
+    <mat-label>Login</mat-label>
+    <input matInput type="text" id="login" [(ngModel)]="registerData.login" name="login" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" id="mail" [(ngModel)]="registerData.mail" name="mail" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Prénom</mat-label>
+    <input matInput type="text" id="firstname" [(ngModel)]="registerData.firstname" name="firstname" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nom</mat-label>
+    <input matInput type="text" id="lastname" [(ngModel)]="registerData.lastname" name="lastname" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Mot de passe</mat-label>
+    <input matInput type="password" id="password" [(ngModel)]="registerData.password" name="password" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Confirmer le mot de passe</mat-label>
+    <input matInput type="password" id="password_confirmation" [(ngModel)]="registerData.password_confirmation" name="password_confirmation" required>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">S'inscrire</button>
+</form>
